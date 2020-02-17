@@ -9,7 +9,7 @@
 /coverage
 
 #Api keys
-/.firebase
+/src/firebase
 
 # production
 /build
