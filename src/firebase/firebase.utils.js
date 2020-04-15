@@ -3,20 +3,39 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const config = {
-    apiKey: "AIzaSyCZWp5wXszUdAc6N_8LREUnZ5dUE2Ny_xE",
-    authDomain: "majog-db.firebaseapp.com",
-    databaseURL: "https://majog-db.firebaseio.com",
-    projectId: "majog-db",
-    storageBucket: "majog-db.appspot.com",
-    messagingSenderId: "1086729471625",
-    appId: "1:1086729471625:web:7e87cad88cc060f3bca858",
-    measurementId: "G-TGD01GR6CP"
+    apiKey: "AIzaSyBcafwwQSJIIgwtysZgmURS_QLTBVURhEQ",
+    authDomain: "majog-8e658.firebaseapp.com",
+    databaseURL: "https://majog-8e658.firebaseio.com",
+    projectId: "majog-8e658",
+    storageBucket: "majog-8e658.appspot.com",
+    messagingSenderId: "316344707675",
+    appId: "1:316344707675:web:82129d3fef5d04860c2d7e",
+    measurementId: "G-HKG91Y93V2"
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!userAuth) return;
 
-    
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+    const snapShot = await userRef.get();
+
+    if(!snapShot.exists) {
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            })
+        } catch (error) {
+            console.log('error creating user', error.message);
+        }
+    }
+    return userRef;
 }
 
 firebase.initializeApp(config);
